@@ -4,6 +4,13 @@ import MapView, { Marker } from 'react-native-maps';
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
+export const getCurrentLocation = () => {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(position => resolve(position), e => reject(e));
+  });
+};
+
+
 export default class App extends React.Component {
 
   constructor() {
@@ -22,6 +29,10 @@ export default class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+
+  }
+
 
   onRegionChange(region) {
     this.setState({ region });
@@ -34,6 +45,8 @@ export default class App extends React.Component {
           {this.state.marker.latitude}
         </Text>
       <MapView style={styles.map}
+        provider={'google'}
+        showsUserLocation={true}
         initialRegion={this.state.region}
         onPress={ event => this.setState({marker: event.nativeEvent.coordinate}) }
         >
@@ -59,7 +72,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   map: {
-    height: '100%',
-    width: '100%'
+    height: 740,
+    width: 360
   }
 });
