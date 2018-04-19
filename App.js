@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-
+var Vibration = require('react-native-vibration');
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 export const getCurrentLocation = () => {
@@ -25,6 +25,9 @@ export default class App extends React.Component {
       marker: {
         latitude: 42.3601,
         longitude: -71.0589
+      },
+      user: {
+
       }
     };
   }
@@ -38,6 +41,18 @@ export default class App extends React.Component {
     this.setState({ region });
   }
 
+  onPress(event) {
+    this.setState({marker: event.nativeEvent.coordinate});
+
+      Vibration.vibrate(1000);
+    getCurrentLocation().then((res) => {
+      let difflat = res.coords.latitude - this.state.marker.latitude;
+      if (Math.abs(difflat) <  0.0025) {
+        console.log(difflat);
+      };
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -48,7 +63,7 @@ export default class App extends React.Component {
         provider={'google'}
         showsUserLocation={true}
         initialRegion={this.state.region}
-        onPress={ event => this.setState({marker: event.nativeEvent.coordinate}) }
+        onPress={ event => this.onPress(event) }
         >
         <MapView.Marker
         coordinate={ this.state.marker }
