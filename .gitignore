@@ -3,6 +3,16 @@
 # expo
 .expo/
 
+.idea/
+
+/android/.gradle/
+
+/android/build/
+
+/android/app/build/
+
+/android/.idea/
+
 # dependencies
 /node_modules
 
