@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-var Vibration = require('react-native-vibration');
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import MapView, { Animated, Marker } from 'react-native-maps';
 
-export const getCurrentLocation = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(position => resolve(position), e => reject(e));
-  });
-};
-
+const LATITUDE_DELTA = 0.0922
+const LONGITUDE_DELTA = 0.0421
 
 export default class App extends React.Component {
 
@@ -74,9 +68,6 @@ export default class App extends React.Component {
   }
 }
 
-function markerClick() {
-  console.log('test?');
-}
 
 
 const styles = StyleSheet.create({
