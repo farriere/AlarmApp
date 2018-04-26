@@ -21,6 +21,8 @@ to
  if (contextHasBug(superContext)) {
 ```
 
+Per https://github.com/react-community/react-native-maps/issues/1399
+
 It's since been ejected since CRNA doesn't seem to have a vibration library that doesn't require native implementations.
 
 ## Table of Contents
