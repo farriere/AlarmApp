@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Vibration, PermissionsAndroid } from 'react-native';
 import MapView, { Animated, Marker } from 'react-native-maps';
 
 const LATITUDE_DELTA = 0.0922
@@ -7,8 +7,29 @@ const LONGITUDE_DELTA = 0.0421
 
 export default class App extends React.Component {
 
+  async requestLocationPermission() {
+    try {
+      var granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Location Permission',
+          'message': 'Cool Location App needs access to your location'
+        }
+      )
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location")
+      } else {
+        console.log("Camera permission denied")
+      }
+    } catch (err) {
+      console.warn(err)
+    }
+  }
+
   constructor() {
     super();
+
+
     this.state = {
       region: {
         latitude: 42.3601,
@@ -19,6 +40,10 @@ export default class App extends React.Component {
       marker: {
         latitude: 42.3601,
         longitude: -71.0589
+      },
+      user: {
+        latitude: 200,
+        longitude: 200
       }
     };
   }
@@ -30,22 +55,27 @@ export default class App extends React.Component {
    };
 
   componentDidMount() {
-
+      this.requestLocationPermission();
+      navigator.geolocation.watchPosition(event => this.onUserLocationChange(event));
   }
 
 
   onRegionChange(region) {
-    this.setState({ region });
+    this.setState({ region: region });
+  }
+
+  onUserLocationChange(event) {
+    this.setState({user: event.coords});
+    let diffLat = event.coords.latitude - this.state.marker.latitude;
+    let diffLong =  event.coords.longitude - this.state.marker.longitude;
+    if (Math.abs(diffLat) <  0.0025 && Math.abs(diffLong) <  0.0025) {
+      console.log(diffLat);
+      Vibration.vibrate(1000);
+    };
   }
 
   onPress(event) {
     this.setState({marker: event.nativeEvent.coordinate});
-    this.getCurrentLocation().then((res) => {
-      let difflat = res.coords.latitude - this.state.marker.latitude;
-      if (Math.abs(difflat) <  0.0025) {
-        console.log(difflat);
-      };
-    });
   }
 
   render() {
@@ -56,11 +86,16 @@ export default class App extends React.Component {
         showsUserLocation={true}
         initialRegion={this.state.region}
         onPress={ event => this.onPress(event) }
+        showsCompass={true}
+
         >
         <MapView.Marker
         coordinate={ this.state.marker }
         />
       </MapView>
+      <Text>
+        {this.state.user.latitude}
+      </Text>
       </View>
     );
   }
