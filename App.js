@@ -13,18 +13,21 @@ export default class App extends React.Component {
       region: {
         latitude: 42.3601,
         longitude: -71.0589,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
       },
       marker: {
         latitude: 42.3601,
         longitude: -71.0589
-      },
-      user: {
-
       }
     };
   }
+
+  getCurrentLocation() {
+     return new Promise((resolve, reject) => {
+       navigator.geolocation.getCurrentPosition(position => resolve(position), e => reject(e));
+     });
+   };
 
   componentDidMount() {
 
@@ -37,9 +40,7 @@ export default class App extends React.Component {
 
   onPress(event) {
     this.setState({marker: event.nativeEvent.coordinate});
-
-      Vibration.vibrate(1000);
-    getCurrentLocation().then((res) => {
+    this.getCurrentLocation().then((res) => {
       let difflat = res.coords.latitude - this.state.marker.latitude;
       if (Math.abs(difflat) <  0.0025) {
         console.log(difflat);
@@ -50,9 +51,6 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>
-          {this.state.marker.latitude}
-        </Text>
       <MapView style={styles.map}
         provider={'google'}
         showsUserLocation={true}
@@ -73,12 +71,11 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   map: {
-    height: 740,
-    width: 360
+    height: '100%',
+    width: '100%'
   }
 });
