@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Vibration, PermissionsAndroid } from 'react-native';
 import MapView, { Animated, Marker } from 'react-native-maps';
+import Video from 'react-native-video';
 
 const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = 0.0421
 
 export default class App extends React.Component {
+
+  video: Video;
 
   async requestLocationPermission() {
     try {
@@ -44,9 +47,19 @@ export default class App extends React.Component {
       user: {
         latitude: 200,
         longitude: 200
+      },
+      sound: {
+        rate: 1,
+        volume: 1,
+        muted: false,
+        resizeMode: 'contain',
+        duration: 0.0,
+        currentTime: 0.0,
+        paused: true,
       }
     };
   }
+
 
   getCurrentLocation() {
      return new Promise((resolve, reject) => {
@@ -71,6 +84,7 @@ export default class App extends React.Component {
     if (Math.abs(diffLat) <  0.0025 && Math.abs(diffLong) <  0.0025) {
       console.log(diffLat);
       Vibration.vibrate(1000);
+      this.setState({sound.paused: !this.state.sound.paused})
     };
   }
 
@@ -87,7 +101,7 @@ export default class App extends React.Component {
         initialRegion={this.state.region}
         onPress={ event => this.onPress(event) }
         showsCompass={true}
-
+        paused={this.state.video.paused}
         >
         <MapView.Marker
         coordinate={ this.state.marker }
@@ -96,6 +110,11 @@ export default class App extends React.Component {
       <Text>
         {this.state.user.latitude}
       </Text>
+      <Video
+        ref = {(ref: Video) => {this.video = ref}}
+
+        >
+      </Video>
       </View>
     );
   }
@@ -112,5 +131,12 @@ const styles = StyleSheet.create({
   map: {
     height: '100%',
     width: '100%'
-  }
+  },
+  backgroundVideo: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+   },
 });
