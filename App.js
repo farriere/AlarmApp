@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Vibration, PermissionsAndroid } from 'react-native';
+import { StyleSheet, Text, View, Vibration, PermissionsAndroid, TextInput } from 'react-native';
 import MapView, { Animated, Marker } from 'react-native-maps';
 import Video from 'react-native-video';
 
@@ -84,7 +84,8 @@ export default class App extends React.Component {
     if (Math.abs(diffLat) <  0.0025 && Math.abs(diffLong) <  0.0025) {
       console.log(diffLat);
       Vibration.vibrate(1000);
-      this.setState({sound.paused: !this.state.sound.paused})
+      this.video.seek(0);
+      this.setState({sound: {paused: !this.state.sound.paused}});
     };
   }
 
@@ -101,18 +102,21 @@ export default class App extends React.Component {
         initialRegion={this.state.region}
         onPress={ event => this.onPress(event) }
         showsCompass={true}
-        paused={this.state.video.paused}
         >
         <MapView.Marker
         coordinate={ this.state.marker }
         />
-      </MapView>
-      <Text>
-        {this.state.user.latitude}
-      </Text>
-      <Video
-        ref = {(ref: Video) => {this.video = ref}}
+        <TextInput style={styles.inputBox}>
 
+              </TextInput>
+      </MapView>
+      <Video
+        source={require('./assets/sounds/Roland-JV-2080-Pick-Bass-C2.wav')}
+        ref = {(ref) => {this.video = ref}}
+        paused={this.state.sound.paused}
+        volume={this.state.sound.volume}
+        muted={this.state.sound.muted}
+        repeat={true}
         >
       </Video>
       </View>
@@ -138,5 +142,5 @@ const styles = StyleSheet.create({
     left: 0,
     bottom: 0,
     right: 0,
-   },
+   }
 });
