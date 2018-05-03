@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Vibration, PermissionsAndroid, Button, Touchabl
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default class AddressScreen extends React.Component {
-    const GooglePlacesInput = () => {
+    render() {
     return (
         <GooglePlacesAutocomplete
           placeholder='Search'
@@ -22,7 +22,7 @@ export default class AddressScreen extends React.Component {
           }}
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
-            key: 'YOUR API KEY',
+            key: 'AIzaSyA9vmylTlBXWBpNeiRdLUKt_75LnjakXMQ',
             language: 'en', // language of the results
             types: '(cities)' // default: 'geocode'
           }}
@@ -48,7 +48,7 @@ export default class AddressScreen extends React.Component {
           }}
 
           filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-          predefinedPlaces={[homePlace, workPlace]}
+          //predefinedPlaces={[homePlace, workPlace]}
 
           debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
           renderRightButton={() => <Text>Custom text after the inputg</Text>}

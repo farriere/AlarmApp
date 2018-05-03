@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, Vibration, PermissionsAndroid, TouchableOpacity
 import MapView, { Animated, Marker } from 'react-native-maps';
 import Video from 'react-native-video';
 
+const LATITUDE_DELTA = 0.0922
+const LONGITUDE_DELTA = 0.0421
+
 export default class MapScreen extends React.Component {
 
   video: Video;
@@ -107,7 +110,11 @@ export default class MapScreen extends React.Component {
 
            <TouchableOpacity style={styles.overlay} onPress={this._onPressButton}>
               <View style={styles.button}>
-                <Text style={styles.buttonText}>TouchableOpacity</Text>
+                <Text style={styles.buttonText}
+                onPress={() => this.props.navigation.navigate('AddressScreen')}
+                >
+                    Ya lost?
+                </Text>
               </View>
             </TouchableOpacity>
           <Video
@@ -147,8 +154,8 @@ const styles = StyleSheet.create({
    overlay: {
     flex: 1,
     position: 'absolute',
-    top: 0,
-    left: 0,
+    top: 100,
+    left: 100,
     right: 0
    }
 });
