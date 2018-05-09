@@ -7,7 +7,9 @@ const LATITUDE_DELTA = 0.0922
 const LONGITUDE_DELTA = 0.0421
 
 export default class MapScreen extends React.Component {
-
+  static navigationOptions = {
+          title: 'Alarm',
+        };
   video: Video;
 
   async requestLocationPermission() {
@@ -92,7 +94,9 @@ export default class MapScreen extends React.Component {
 
 
   render() {
+    const {navigation} = this.props;
     return (
+
       <View style={styles.container}>
 
 
@@ -104,7 +108,7 @@ export default class MapScreen extends React.Component {
             showsCompass={true}
             >
             <MapView.Marker
-            coordinate={ this.state.marker }
+            coordinate={ navigation.getParam('location', this.state.marker)}
             />
           </MapView>
 

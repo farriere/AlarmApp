@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, Vibration, PermissionsAndroid, Button, Touchabl
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 export default class AddressScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Find Your Location',
+      };
     render() {
     return (
         <GooglePlacesAutocomplete
@@ -14,8 +17,10 @@ export default class AddressScreen extends React.Component {
           fetchDetails={true}
           renderDescription={row => row.description} // custom description render
           onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-            console.log(data);
-            console.log(details);
+            console.log(details.geometry);
+            this.props.navigation.navigate('Home', {location: {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng}});
 
           }}
           getDefaultValue={() => {
