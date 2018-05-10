@@ -18,9 +18,8 @@ export default class AddressScreen extends React.Component {
           renderDescription={row => row.description} // custom description render
           onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
             console.log(details.geometry);
-            this.props.navigation.navigate('Home', {location: {
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng}});
+            this.props.navigation.state.params.setMarkerLocation(details.geometry.location.lat, details.geometry.location.lng);
+            this.props.navigation.goBack();
 
           }}
           getDefaultValue={() => {

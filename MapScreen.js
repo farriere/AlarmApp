@@ -91,6 +91,9 @@ export default class MapScreen extends React.Component {
     this.setState({marker: event.nativeEvent.coordinate});
   }
 
+  setMarkerLocation(latitude, longitude) {
+    this.setState({marker: {latitude: latitude, longitude: longitude}});
+  }
 
 
   render() {
@@ -108,14 +111,14 @@ export default class MapScreen extends React.Component {
             showsCompass={true}
             >
             <MapView.Marker
-            coordinate={ navigation.getParam('location', this.state.marker)}
+            coordinate={this.state.marker}
             />
           </MapView>
 
-           <TouchableOpacity style={styles.overlay} onPress={this._onPressButton}>
+           <TouchableOpacity style={styles.overlay} onPress={() => this.props.navigation.navigate('AddressScreen', {setMarkerLocation: this.setMarkerLocation.bind(this)})}>
               <View style={styles.button}>
                 <Text style={styles.buttonText}
-                onPress={() => this.props.navigation.navigate('AddressScreen')}
+
                 >
                     Ya lost?
                 </Text>
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     position:'absolute',
-    borderWidth: 1
+    borderWidth: 10
    },
   backgroundVideo: {
       height: 0,
