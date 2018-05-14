@@ -113,17 +113,12 @@ export default class MapScreen extends React.Component {
             <MapView.Marker
             coordinate={this.state.marker}
             />
+
           </MapView>
+            <TouchableOpacity style={styles.overlay} onPress={() => this.props.navigation.navigate('AddressScreen', {setMarkerLocation: this.setMarkerLocation.bind(this)})}>
+                            <Text style={styles.buttonText}>YA LOST DUMBASS?</Text>
+                        </TouchableOpacity>
 
-           <TouchableOpacity style={styles.overlay} onPress={() => this.props.navigation.navigate('AddressScreen', {setMarkerLocation: this.setMarkerLocation.bind(this)})}>
-              <View style={styles.button}>
-                <Text style={styles.buttonText}
-
-                >
-                    Ya lost?
-                </Text>
-              </View>
-            </TouchableOpacity>
           <Video
             source={require('./assets/sounds/Roland-JV-2080-Pick-Bass-C2.wav')}
             ref = {(ref) => {this.video = ref}}
@@ -159,10 +154,17 @@ const styles = StyleSheet.create({
       width: 0
    },
    overlay: {
-    flex: 1,
+    alignItems: 'center',
     position: 'absolute',
-    top: 100,
-    left: 100,
-    right: 0
+    top: 50,
+    padding: 10,
+    backgroundColor: 'rgba(237,45,255,.5)',
+    borderRadius: 10,
+    borderWidth: 1
+   },
+   buttonText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    fontStyle: 'italic'
    }
 });
